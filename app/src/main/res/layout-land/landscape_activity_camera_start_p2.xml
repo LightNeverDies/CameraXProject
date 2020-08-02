@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/design_default_color_on_secondary"
+    android:orientation="vertical"
+    tools:context=".CameraStartP">
+
+    <TextureView
+        android:id="@+id/view_finder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+    <Button
+    android:id="@+id/Switch"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+        android:layout_gravity="right"
+    android:background="@android:drawable/ic_menu_rotate"
+    tools:layout_editor_absoluteX="345dp"
+    tools:layout_editor_absoluteY="1dp"
+    tools:ignore="MissingConstraints" />
+
+<Button
+    android:id="@+id/Snap"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_gravity="bottom|center"
+    android:background="@drawable/circle_button"
+    tools:layout_editor_absoluteX="155dp"
+    tools:layout_editor_absoluteY="391dp"
+    tools:ignore="MissingConstraints" />
+
+<Button
+    android:id="@+id/Back"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_gravity="left"
+    android:background="@drawable/abc_vector_test"
+    tools:layout_editor_absoluteX="16dp"
+    tools:layout_editor_absoluteY="1dp"
+    tools:ignore="MissingConstraints" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

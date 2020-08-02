@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Theme.AppCompat.DayNight.NoActionBar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/CameraStart"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/custom_button"
+        android:backgroundTint="@color/diff"
+        android:text="Camera"
+        android:textColor="#FFFFFFFF">
+
+    </Button>
+
+    <Button
+        android:id="@+id/Collage"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/custom_button"
+        android:backgroundTint="@color/diff"
+        android:text="Collage"
+        android:textColor="#FFFFFFFF">
+
+    </Button>
+
+    <Button
+        android:id="@+id/Gallery"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/custom_button"
+        android:backgroundTint="@color/diff"
+        android:text="Gallery"
+        android:textColor="#FFFFFFFF">
+
+    </Button>
+
+</LinearLayout>
