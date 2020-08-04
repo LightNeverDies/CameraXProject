@@ -26,11 +26,31 @@ public class MainActivity extends AppCompatActivity {
                     openCamera();
             }
         });
+        collage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCollage();
+            }
+        });
+        gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
     }
 
     // function for opening the CameraActivity - > CameraStartP
     public void openCamera(){
         Intent cam = new Intent(this,CameraStartP.class);
         startActivity(cam);
+    }
+    public void openGallery(){
+        Intent gallery = new Intent(this,Gallery.class);
+        startActivity(gallery);
+    }
+    public void openCollage(){
+        Intent collage = new Intent(this,Collage.class);
+        startActivity(collage);
     }
 }
