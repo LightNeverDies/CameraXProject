@@ -51,9 +51,9 @@ public class GalleryAdapter extends BaseAdapter {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.Img);
 
         nameTxt.setText(gm.getName());
-       // dateTxt.setText(String.valueOf(gm.getDate()));
         dateTxt.setText(gm.getDate());
-        Picasso.with(context).load(gm.getUri()).into(imageView);
+        Picasso.with(context).load(gm.getUri()).noFade().noPlaceholder().resize(200,200).centerCrop().into(imageView);
+
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

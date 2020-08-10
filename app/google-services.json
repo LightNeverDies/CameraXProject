@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "131083078490",
+    "firebase_url": "https://joyfirebaseproject-855bc.firebaseio.com",
+    "project_id": "joyfirebaseproject-855bc",
+    "storage_bucket": "joyfirebaseproject-855bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131083078490:android:66acb1b5a4579431b74163",
+        "android_client_info": {
+          "package_name": "com.example.joy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "131083078490-26cdf5kdvhqovq13pmpa2q7pqm7pd33p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.joy",
+            "certificate_hash": "b9a4814f4f59d6781c22d57c99baa3ec6ac08d8b"
+          }
+        },
+        {
+          "client_id": "131083078490-pgvso3lqnfbb0i84nv21v125ssp0u83o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8xdO6P9I27O4qz-4mRxEVAXQz1Ik2e5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131083078490-pgvso3lqnfbb0i84nv21v125ssp0u83o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
