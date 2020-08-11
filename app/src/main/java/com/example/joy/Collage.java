@@ -54,20 +54,21 @@ public class Collage extends AppCompatActivity {
             collageModels.add(collageModel);
         }
         gridView.setAdapter(new CollageAdapter(Collage.this,collageModels));
+        gridView.invalidate();
     }
 
     private void getData(){
         mStorageRef = FirebaseStorage.getInstance().getReferenceFromUrl(url);
         File collageFolder = new File (Environment.getExternalStorageDirectory(), "Joy" + File.separator + "Download");
+        if(!collageFolder.exists()){collageFolder.mkdirs();}
         if(collageFolder.exists()) {
-            collageFolder.mkdirs();
             mStorageRef.listAll()
                     .addOnSuccessListener(new OnSuccessListener<ListResult>() {
                         @Override
                         public void onSuccess(ListResult listResult) {
                             for (StorageReference item : listResult.getItems()) {
                                 final File localFile = new File(collageFolder.toString() + File.separator + item.getName());
-                                if(!localFile.exists()) {
+                                if (!localFile.exists()) {
                                     StorageReference mStorageReference = mStorageRef.child(item.getName());
                                     mStorageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                         @Override
@@ -84,7 +85,6 @@ public class Collage extends AppCompatActivity {
                                         }
                                     });
                                 }
-
                             }
                             LoadFiles();
                         }
