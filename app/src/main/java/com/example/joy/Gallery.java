@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.GridView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Gallery extends AppCompatActivity {
+
+    private String[] extensions = {"jpg", "png", "svg"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,7 @@ public class Gallery extends AppCompatActivity {
 
         File imageFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Joy" + File.separator + "Camera");
 
-        GalleryModel galleryModel;
+        GalleryModel galleryModel ;
 
         if(imageFolder.exists()){
             File[] files = imageFolder.listFiles();
@@ -43,13 +46,20 @@ public class Gallery extends AppCompatActivity {
 
                 galleryModel = new GalleryModel();
                 galleryModel.setName(file.getName());
-                long miliSeconds = file.lastModified();
+                long milSeconds = file.lastModified();
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
-                Date resultdate = new Date(miliSeconds);
-                galleryModel.setDate(resultdate.toString());
+                Date resultDate = new Date(milSeconds);
+                galleryModel.setDate(resultDate.toString());
                 galleryModel.setUri(Uri.fromFile(file));
 
-                galleryModels.add(galleryModel);
+                Uri png = Uri.fromFile(new File(String.valueOf(file)));
+                String fileExtension = MimeTypeMap.getFileExtensionFromUrl(png.toString());
+                for(String endPart : extensions){
+                    if(fileExtension.endsWith(endPart)) {
+                        galleryModels.add(galleryModel);
+                    }
+                }
+
             }
         }
 

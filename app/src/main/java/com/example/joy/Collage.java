@@ -66,7 +66,6 @@ public class Collage extends AppCompatActivity {
                         @Override
                         public void onSuccess(ListResult listResult) {
                             for (StorageReference item : listResult.getItems()) {
-                                Log.println(2, "Hell", item.toString());
                                 final File localFile = new File(collageFolder.toString() + File.separator + item.getName());
                                 if(!localFile.exists()) {
                                     StorageReference mStorageReference = mStorageRef.child(item.getName());
@@ -76,6 +75,7 @@ public class Collage extends AppCompatActivity {
                                             String msg = "Pic captured at " + localFile.getPath();
                                             Toast.makeText(Collage.this, msg, Toast.LENGTH_LONG).show();
                                             LoadFiles();
+                                            // Loading the collage image in new ImageViewModel at new activity -> next
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
