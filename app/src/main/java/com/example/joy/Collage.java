@@ -74,7 +74,6 @@ public class Collage extends AppCompatActivity {
                                             String msg = "Pic captured at " + localFile.getPath();
                                             Toast.makeText(Collage.this, msg, Toast.LENGTH_LONG).show();
                                             LoadFiles();
-                                            // Loading the collage image in new ImageViewModel at new activity -> next
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
