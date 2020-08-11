@@ -7,7 +7,6 @@ import android.graphics.Matrix
 import android.os.Bundle
 import android.os.Environment
 import android.util.DisplayMetrics
-import android.util.Log
 import android.util.Rational
 import android.util.Size
 import android.view.Surface
@@ -29,7 +28,6 @@ class CameraStartP : AppCompatActivity() {
     var backMenu: Button? = null
     var switchCameras: Button? = null
     var takePicture: Button? = null
-//    var textureView: TextureView? = null
     private var lensFacing = LensFacing.BACK
 
     // Code for permission for using camera and storage of phone

@@ -6,10 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,7 +46,10 @@ public class CollageAdapter extends BaseAdapter {
 
         final CollageModel cm = (CollageModel) this.getItem(position);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.CollageImg);
-        Picasso.with(context).load(cm.getUri()).centerCrop().resize(200,200).into(imageView);
+        TextView nameTxt = (TextView) convertView.findViewById(R.id.CollageName);
+
+        nameTxt.setText("Collage Name:  " + cm.getCollageName());
+        Picasso.with(context).load(cm.getUri()).noFade().noPlaceholder().resize(400,400).into(imageView);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

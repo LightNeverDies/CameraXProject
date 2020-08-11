@@ -4,42 +4,140 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Theme.AppCompat.DayNight.NoActionBar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:layout_height="fill_parent"
+    android:layout_gravity="bottom"
+    android:background="@color/backgroundMain"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/filters" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle = "bold"
+            android:fontFamily="@font/bradhitc"
+            android:textColor="@color/cardview_light_background"
+            android:text="Joy"
+            android:textSize="45dp"/>
+
+
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/CameraStart"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
+            android:backgroundTint="@color/button1"
+            android:layout_gravity="center"
+            android:layout_margin="6dp"
+            android:textSize="24sp"
+            android:text="Camera"
+            android:textColor="#FFFFFFFF">
+
+        </Button>
+
+        <Button
+            android:id="@+id/Gallery"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
+            android:backgroundTint="@color/button2"
+            android:layout_gravity="center"
+            android:layout_margin="6dp"
+            android:textSize="22sp"
+            android:text="Gallery"
+            android:textColor="#FFFFFFFF">
+
+        </Button>
+
+        <Button
+            android:id="@+id/Collage"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
+            android:backgroundTint="@color/button3"
+            android:layout_gravity="center"
+            android:layout_margin="6dp"
+            android:textSize="20sp"
+            android:text="Collage"
+            android:textColor="#FFFFFFFF">
+
+        </Button>
+
     <Button
-        android:id="@+id/CameraStart"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:id="@+id/Filter"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/custom_button"
-        android:backgroundTint="@color/diff"
-        android:text="Camera"
+        android:backgroundTint="@color/button4"
+        android:layout_gravity="center"
+        android:layout_margin="6dp"
+        android:textSize="20sp"
+        android:text="Filters"
         android:textColor="#FFFFFFFF">
 
     </Button>
 
-    <Button
-        android:id="@+id/Collage"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/custom_button"
-        android:backgroundTint="@color/diff"
-        android:text="Collage"
-        android:textColor="#FFFFFFFF">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center|bottom"
+            android:layout_weight="1"
+            android:layout_margin="20dp"
+            android:layout_height="wrap_content">
 
-    </Button>
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="5dp"
+                android:backgroundTint="@color/button1"
+                android:background="@drawable/photo">
 
-    <Button
-        android:id="@+id/Gallery"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/custom_button"
-        android:backgroundTint="@color/diff"
-        android:text="Gallery"
-        android:textColor="#FFFFFFFF">
+            </ImageView>
 
-    </Button>
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="5dp"
+                android:backgroundTint="@color/button2"
+                android:background="@drawable/gallery">
+
+            </ImageView>
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="5dp"
+                android:backgroundTint="@color/button3"
+                android:background="@drawable/collage">
+
+            </ImageView>
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="5dp"
+                android:backgroundTint="@color/button4"
+                android:background="@drawable/rgb">
+
+            </ImageView>
+
+
+        </LinearLayout>
 
 </LinearLayout>

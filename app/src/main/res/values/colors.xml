@@ -5,4 +5,11 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="pink">#C32BDE</color>
     <color name="diff">#FF630EDF</color>
+
+    <color name="backgroundMain">#0E0E0E</color>
+    <color name="button1">#9D27B0</color>
+    <color name="button2">#673AB7</color>
+    <color name="button3">#00BCD4</color>
+    <color name="button4">#FF9801</color>
+    <color name="button5">#FF5722</color>
 </resources>

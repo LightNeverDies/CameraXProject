@@ -3,25 +3,21 @@ package com.example.joy;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
+import android.view.WindowManager;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Collage extends AppCompatActivity {
@@ -35,6 +31,7 @@ public class Collage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getData();
         setContentView(R.layout.activity_collage);
         gridView = (GridView) findViewById(R.id.collage_grid);
@@ -51,6 +48,7 @@ public class Collage extends AppCompatActivity {
             File file = files[i];
             collageModel = new CollageModel();
             collageModel.setUri(Uri.fromFile(file));
+            collageModel.setCollageName(file.getName());
             collageModels.add(collageModel);
         }
         gridView.setAdapter(new CollageAdapter(Collage.this,collageModels));

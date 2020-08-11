@@ -5,16 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.View;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.GridView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Gallery extends AppCompatActivity {
 
@@ -23,8 +20,8 @@ public class Gallery extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_gallery);
-
         final GridView gridView = (GridView) findViewById(R.id.month_grid);
         gridView.setAdapter(new GalleryAdapter(Gallery.this,getData()));
 
@@ -47,9 +44,9 @@ public class Gallery extends AppCompatActivity {
                 galleryModel = new GalleryModel();
                 galleryModel.setName(file.getName());
                 long milSeconds = file.lastModified();
-                SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
-                Date resultDate = new Date(milSeconds);
-                galleryModel.setDate(resultDate.toString());
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                String resultDate = sdf.format(milSeconds);
+                galleryModel.setDate(resultDate);
                 galleryModel.setUri(Uri.fromFile(file));
 
                 Uri png = Uri.fromFile(new File(String.valueOf(file)));

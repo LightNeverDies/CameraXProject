@@ -1,5 +1,6 @@
 package com.example.joy;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public class GalleryAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
        if(convertView == null){
@@ -50,9 +52,9 @@ public class GalleryAdapter extends BaseAdapter {
         TextView dateTxt = (TextView) convertView.findViewById(R.id.ImgDate);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.Img);
 
-        nameTxt.setText(gm.getName());
-        dateTxt.setText(gm.getDate());
-        Picasso.with(context).load(gm.getUri()).noFade().noPlaceholder().resize(200,200).centerCrop().into(imageView);
+        nameTxt.setText("Picture Name:  " + gm.getName());
+        dateTxt.setText("Date Created:  " + gm.getDate());
+        Picasso.with(context).load(gm.getUri()).resize(400,400).noFade().noPlaceholder().into(imageView);
 
 
         convertView.setOnClickListener(new View.OnClickListener() {
