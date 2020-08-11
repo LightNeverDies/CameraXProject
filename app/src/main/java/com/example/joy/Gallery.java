@@ -31,7 +31,7 @@ public class Gallery extends AppCompatActivity {
 
         ArrayList<GalleryModel> galleryModels = new ArrayList<>();
 
-        File imageFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Joy");
+        File imageFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Joy" + File.separator + "Camera");
 
         GalleryModel galleryModel;
 

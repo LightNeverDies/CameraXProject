@@ -98,7 +98,7 @@ class CameraStartP : AppCompatActivity() {
                 .setTargetRotation(windowManager.defaultDisplay.rotation).build()
         val imgCap = ImageCapture(imageCaptureConfig)
         findViewById<View>(R.id.Snap).setOnClickListener {
-            val imagesFolder = File ( Environment.getExternalStorageDirectory(), "Joy")
+            val imagesFolder = File ( Environment.getExternalStorageDirectory(), "Joy" + File.separator + "Camera")
             if(!imagesFolder.exists()){imagesFolder.mkdirs()}
             val file = File(imagesFolder.toString() + File.separator + System.currentTimeMillis() + ".png")
             imgCap.takePicture(file, object : ImageCapture.OnImageSavedListener {

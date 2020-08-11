@@ -44,7 +44,7 @@ public class Collage extends AppCompatActivity {
     private void LoadFiles(){
         ArrayList<CollageModel> collageModels = new ArrayList<>();
         CollageModel collageModel;
-        File collageFolder = new File (Environment.getExternalStorageDirectory(), "Joy" + File.separator + "Collage");
+        File collageFolder = new File (Environment.getExternalStorageDirectory(), "Joy" + File.separator + "Download");
         File[] files = collageFolder.listFiles();
         for(int i =0; i < files.length; i++)
         {
@@ -58,7 +58,7 @@ public class Collage extends AppCompatActivity {
 
     private void getData(){
         mStorageRef = FirebaseStorage.getInstance().getReferenceFromUrl(url);
-        File collageFolder = new File (Environment.getExternalStorageDirectory(), "Joy" + File.separator + "Collage");
+        File collageFolder = new File (Environment.getExternalStorageDirectory(), "Joy" + File.separator + "Download");
         if(collageFolder.exists()) {
             collageFolder.mkdirs();
             mStorageRef.listAll()
