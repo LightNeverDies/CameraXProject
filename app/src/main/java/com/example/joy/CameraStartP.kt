@@ -32,7 +32,7 @@ class CameraStartP : AppCompatActivity() {
 
     // Code for permission for using camera and storage of phone
     private val REQUEST_CODE_PERMISSIONS = 101
-    private val REQUIRED_PERMISSIONS = arrayOf("android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE")
+    private val REQUIRED_PERMISSIONS = arrayOf("android.permission.CAMERA")
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +57,7 @@ class CameraStartP : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
+
         //start camera if permission has been granted by user
         if (allPermissionsGranted()) {
            textureView.post{startCamera()}
@@ -72,7 +73,7 @@ class CameraStartP : AppCompatActivity() {
     }
 
     // Starting camera
-    private fun startCamera() {
+    fun startCamera() {
         // unbind camera
         CameraX.unbindAll()
         val aspectRatio = Rational(textureView.width, textureView.height)

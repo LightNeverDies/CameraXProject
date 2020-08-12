@@ -1,25 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundMain"
     tools:context=".Collage_Maker">
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/Information"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/information"
+            android:layout_alignParentLeft="true"
+            android:backgroundTint="@color/button3"
+            android:layout_margin="6dp"
+            android:textSize="22sp"/>
+
+        <Button
+            android:id="@+id/SaveImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
+            android:backgroundTint="@color/button3"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="6dp"
+            android:textSize="20sp"
+            android:text=" Save Image "
+            android:textColor="#FFFFFFFF"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/MainRelativeLayout"
         android:background="@drawable/image_view_border"
-        android:padding="1dp">
+        android:padding="1dp"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/Collage_Maker"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY">
-        </ImageView>
+            android:scaleType="fitXY"/>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/PickedImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/Collage_Maker"
+            android:layout_alignLeft="@id/Collage_Maker"
+            android:layout_alignRight="@id/Collage_Maker"
+            android:layout_alignTop="@id/Collage_Maker"
+            android:visibility="gone"
+            />
 
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/TextInformation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:fontFamily="@font/bradhitc"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:visibility="gone"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/Collage_Maker"
+        android:layout_below="@id/MainRelativeLayout"
+        tools:ignore="NotSibling">
+
+        <Button
+            android:id="@+id/LoadGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
+            android:backgroundTint="@color/button3"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:textSize="22sp"
+            android:textColor="#FFFFFFFF"
+            android:text=" Load Image " />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
