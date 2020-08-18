@@ -20,7 +20,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
@@ -30,9 +33,13 @@ import java.util.List;
 
 public class ImageChanger extends AppCompatActivity {
     ImageView imageView;
-    Button btnsel, changeColor;
-    SeekBar mSaturationSeekbar;
+    Button btnsel, changeColor, reset;
+    SeekBar mSaturationSeekbar , mRotateSeekbar;
     Bitmap bitmap;
+    RadioGroup mAxisRadioGroup;
+    RadioButton mAxisRedRadioButton, mAxisGreenRadioButton,
+            mAxisBlueRadioButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +49,18 @@ public class ImageChanger extends AppCompatActivity {
         imageView = findViewById(R.id.image_view);
         btnsel = findViewById(R.id.btnSelect);
         changeColor = (Button) findViewById(R.id.ColorFilter);
+        reset = (Button) findViewById(R.id.Reset);
 
         mSaturationSeekbar = (SeekBar) findViewById(R.id.seekBarSaturation);
-        mSaturationSeekbar.setOnSeekBarChangeListener(seekBarChangeListener);
+        mSaturationSeekbar.setOnSeekBarChangeListener(Saturation);
+
+        mRotateSeekbar = (SeekBar) findViewById(R.id.seekBarRotate);
+        mRotateSeekbar.setOnSeekBarChangeListener(ColorFilter);
+
+        mAxisRadioGroup = (RadioGroup) findViewById(R.id.axisgroup);
+        mAxisRedRadioButton = (RadioButton) findViewById(R.id.radioAxisRed);
+        mAxisGreenRadioButton = (RadioButton) findViewById(R.id.radioAxisGreen);
+        mAxisBlueRadioButton = (RadioButton) findViewById(R.id.radioAxisBlue);
 
         btnsel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,9 +77,16 @@ public class ImageChanger extends AppCompatActivity {
             }
         });
 
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ResetImageView();
+            }
+        });
+
     }
 
-    SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+    SeekBar.OnSeekBarChangeListener Saturation = new SeekBar.OnSeekBarChangeListener() {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress,
@@ -78,8 +101,25 @@ public class ImageChanger extends AppCompatActivity {
         public void onStopTrackingTouch(SeekBar seekBar) {
             loadSaturationBitmap();
         }
-
     };
+
+    SeekBar.OnSeekBarChangeListener ColorFilter = new SeekBar.OnSeekBarChangeListener() {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress,
+                                      boolean fromUser) {
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            loadRotatedBitmap();
+        }
+    };
+
 
 
     private void pickImageFromGallery(){
@@ -109,7 +149,28 @@ public class ImageChanger extends AppCompatActivity {
 
         }
     }
+    private void loadRotatedBitmap() {
+        if (bitmap != null) {
+            int progressRotation = mRotateSeekbar.getProgress();
 
+            float rotationDegree = (float) progressRotation;
+
+            if (mAxisRedRadioButton.isChecked()) {
+
+                imageView.setImageBitmap(updateRotation(bitmap, 0,
+                        rotationDegree));
+            } else if (mAxisGreenRadioButton.isChecked()) {
+
+                imageView.setImageBitmap(updateRotation(bitmap, 1,
+                        rotationDegree));
+            } else if (mAxisBlueRadioButton.isChecked()) {
+
+                imageView.setImageBitmap(updateRotation(bitmap, 2,
+                        rotationDegree));
+            }
+        }
+
+    }
     private void loadSaturationBitmap() {
         // TODO Auto-generated method stub
         if (bitmap != null) {
@@ -124,7 +185,22 @@ public class ImageChanger extends AppCompatActivity {
         }
     }
 
+    private Bitmap updateRotation(Bitmap src, int axis, float degrees) {
+        int width = src.getWidth();
+        int height = src.getHeight();
 
+        Bitmap bitmapResult = Bitmap.createBitmap(width, height,
+                Bitmap.Config.ARGB_8888);
+        Canvas canvasResult = new Canvas(bitmapResult);
+        Paint paint = new Paint();
+        ColorMatrix colorMatrix = new ColorMatrix();
+        colorMatrix.setRotate(axis, degrees);
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(colorMatrix);
+        paint.setColorFilter(filter);
+        canvasResult.drawBitmap(src, 0, 0, paint);
+
+        return bitmapResult;
+    }
     private Bitmap updateSaturation(Bitmap src, float settingSat) {
 
         int width = src.getWidth();
@@ -145,6 +221,8 @@ public class ImageChanger extends AppCompatActivity {
     private void changeColorByFilter(){
         mSaturationSeekbar.setVisibility((mSaturationSeekbar.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE);
     }
+
+    private void ResetImageView(){
+
+    }
 }
-
-

@@ -8,20 +8,17 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:layout_centerInParent="true"
         android:id="@+id/MainRelativeLayout"
-        android:clipChildren="false"
-        android:clipToPadding="false"
         android:background="@drawable/image_view_border"
-        android:padding="1dp"
         android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"/>
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
 
     </RelativeLayout>
 
@@ -30,34 +27,83 @@
         android:layout_width="match_parent"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:layout_height="match_parent">
-    <Button
-        android:id="@+id/btnSelect"
-        android:text="Select Image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/ColorFilter"
-        android:text="Changing Color"
-        android:layout_below="@+id/btnSelect"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btnSelect"
+            android:text="Select Image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/ColorFilter"
+            android:text="Changing Color"
+            android:layout_below="@+id/btnSelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/Reset"
+            android:text="Reset ImageView"
+            android:layout_below="@+id/ColorFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_below="@+id/Options"
         android:layout_height="wrap_content">
+
+        <SeekBar
+            android:id="@+id/seekBarRotate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="360"
+            android:progress="0" />
 
         <SeekBar
             android:id="@+id/seekBarSaturation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="512"
-            android:visibility="gone"
-            android:progress="256" />
+            android:max="360"
+            android:layout_below="@+id/seekBarRotate"
+            android:progress="0" />
 
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/Options"
+        android:layout_height="wrap_content">
+    <RadioGroup
+        android:id="@+id/axisgroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
+        <RadioButton
+            android:id="@+id/radioAxisRed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Red" />
+
+        <RadioButton
+            android:id="@+id/radioAxisGreen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Green"
+            />
+
+        <RadioButton
+            android:id="@+id/radioAxisBlue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Blue" />
+    </RadioGroup>
+    </RelativeLayout>
 </RelativeLayout>

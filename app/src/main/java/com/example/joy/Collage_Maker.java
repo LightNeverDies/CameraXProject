@@ -46,11 +46,12 @@ public class Collage_Maker extends AppCompatActivity {
     float xDown = 0, yDown = 0;
 
     GestureDetector gestureDetector;
-
     static final int NONE = 0;
     static final int DRAG = 1;
     static final int ZOOM = 2;
     int mode = NONE;
+    private float newRot = 0f;
+    private float d = 0f;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -143,33 +144,39 @@ public class Collage_Maker extends AppCompatActivity {
                         newImage = new ImageView(getApplicationContext());
 
                         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                        lp.addRule(RelativeLayout.ALIGN_BOTTOM, 1);
-                        lp.addRule(RelativeLayout.ALIGN_LEFT, 1);
-                        lp.addRule(RelativeLayout.ALIGN_RIGHT, 1);
-                        lp.addRule(RelativeLayout.ALIGN_TOP, 1);
+//                        lp.addRule(RelativeLayout.ALIGN_BOTTOM, 1);
+//                        lp.addRule(RelativeLayout.ALIGN_LEFT, 1);
+//                        lp.addRule(RelativeLayout.ALIGN_RIGHT, 1);
+//                        lp.addRule(RelativeLayout.ALIGN_TOP, 1);
 
                         newImage.setLayoutParams(lp);
                         newImage.setId(i + rl.getChildCount()); // => might be a problem BIG PROBLEM very soon
 
-                        rl.addView(newImage);
 
+                       // newImage.getScaleType();
+
+                        rl.addView(newImage);
+                        newImage.setAdjustViewBounds(true);
+                        newImage.setScaleType(ImageView.ScaleType.MATRIX);
                         newImage.setImageBitmap(bitmap);
+
+
 
                         newImage.setOnTouchListener(new View.OnTouchListener() {
                             @Override
                             public boolean onTouch(View v, MotionEvent event) {
                                 // the user just put his finger down on the imageView
                                 ImageView view = (ImageView) v;
+                                view.setAdjustViewBounds(true);
                                 view.setScaleType(ImageView.ScaleType.MATRIX);
+
                                 float scale;
                                 switch (event.getAction() & MotionEvent.ACTION_MASK) {
 
                                     case MotionEvent.ACTION_DOWN:
+                                        matrix = new Matrix();
                                         savedMatrix.set(matrix);
-                                        xDown = event.getX();
-                                        yDown = event.getY();
-                                        start.set(xDown, yDown);
-                                        lastEvent = null;
+                                        start.set(event.getX(), event.getY());
                                         mode = DRAG;
                                         break;
 
@@ -179,54 +186,50 @@ public class Collage_Maker extends AppCompatActivity {
                                             matrix.set(savedMatrix);
                                             matrix.postTranslate(event.getX() - start.x, event.getY()
                                                     - start.y);
-                                            float movedX, movedY;
-                                            movedX = event.getX();
-                                            movedY = event.getY();
-
-                                            // newImage.setOnLongClickListener(null);
-
-                                            // calculate how much the user moved his finger
-                                            float distanceX = movedX - xDown;
-                                            float distanceY = movedY - yDown;
-
-                                            // now move the view to that position
-                                            view.setX(view.getX() + distanceX);
-                                            view.setY(view.getY() + distanceY);
                                         }
-                                            else if(mode == ZOOM) {
+                                        else if(mode == ZOOM) {
                                                 float newDist = spacing(event);
-                                                if (newDist > 10f) {
+                                                if (event.getPointerCount() >= 2 & newDist > 5f) {
                                                     matrix.set(savedMatrix);
                                                     scale = newDist / oldDist;
 
                                                     matrix.postScale(scale, scale, mid.x, mid.y);
                                                 }
                                             }
+                                       if (event.getPointerCount() == 2 || event.getPointerCount() == 3) {
+                                            newRot = rotation(event);
+                                            float r = newRot - d;
+                                            float[] values = new float[9];
+                                            matrix.getValues(values);
+                                            float tx = values[2];
+                                            float ty = values[5];
+                                            float sx = values[0];
+                                            float xc = (view.getWidth() / 2) * sx;
+                                            float yc = (view.getHeight() / 2) * sx;
+                                            matrix.postRotate(r, tx + xc, ty + yc);
+                                        }
 
                                         break;
 
                                     case MotionEvent.ACTION_POINTER_DOWN:
                                         oldDist = spacing(event);
                                         Log.e("SPACE","Spacing" + oldDist);
-                                        if(event.getPointerCount() >= 2 & oldDist > 10f ) {
+                                        if(event.getPointerCount() >= 2 & oldDist > 5f ) {
                                             Toast.makeText(Collage_Maker.this, "FUCK OF", Toast.LENGTH_SHORT).show();
                                             savedMatrix.set(matrix);
                                             midPoint(mid, event);
                                             mode = ZOOM;
-
                                         }
-                                        lastEvent = new float[4];
-                                        lastEvent[0] = event.getX(0);
-                                        lastEvent[1] = event.getX(1);
-                                        lastEvent[2] = event.getY(0);
-                                        lastEvent[3] = event.getY(1);
+
+                                        d= rotation(event);
                                         break;
 
                                     case MotionEvent.ACTION_UP:
                                     case MotionEvent.ACTION_CANCEL:
-                                        break;
                                     case MotionEvent.ACTION_POINTER_UP:
-                                        lastEvent = null;
+                                       // lastEvent = null;
+                                        savedMatrix.set(matrix);
+                                        mode = NONE;
                                         break;
 
                                 }
@@ -251,29 +254,88 @@ public class Collage_Maker extends AppCompatActivity {
                     ImageView newImage = new ImageView(getApplicationContext());
 
                     LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                    lp.addRule(RelativeLayout.ALIGN_BOTTOM, 1);
-                    lp.addRule(RelativeLayout.ALIGN_LEFT, 1);
-                    lp.addRule(RelativeLayout.ALIGN_RIGHT, 1);
-                    lp.addRule(RelativeLayout.ALIGN_TOP, 1);
 
                     newImage.setLayoutParams(lp);
+                    newImage.setAdjustViewBounds(true);
+                    newImage.setScaleType(ImageView.ScaleType.MATRIX);
 
                     rl.addView(newImage);
 
                     newImage.setImageBitmap(bitmap);
 
-                    newImage.setOnLongClickListener(new View.OnLongClickListener() {
+                    newImage.setOnTouchListener(new View.OnTouchListener() {
                         @Override
-                        public boolean onLongClick(View v) {
-                            Toast.makeText(Collage_Maker.this, "Hold for 2 seconds to remove the image!", Toast.LENGTH_SHORT).show();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Log.e("ImageID:", "ImageView ID:" + newImage.getId());
-                                    newImage.setImageDrawable(null);
-                                }
-                            }, 2000);
-                            return false;
+                        public boolean onTouch(View v, MotionEvent event) {
+                            // the user just put his finger down on the imageView
+                            ImageView view = (ImageView) v;
+                            view.setAdjustViewBounds(true);
+                            view.setScaleType(ImageView.ScaleType.MATRIX);
+
+                            float scale;
+                            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+
+                                case MotionEvent.ACTION_DOWN:
+                                    matrix = new Matrix();
+                                    savedMatrix.set(matrix);
+                                    start.set(event.getX(), event.getY());
+                                    mode = DRAG;
+                                    break;
+
+                                // the user moved his finger
+                                case MotionEvent.ACTION_MOVE:
+                                    if(mode == DRAG) {
+                                        matrix.set(savedMatrix);
+                                        matrix.postTranslate(event.getX() - start.x, event.getY()
+                                                - start.y);
+                                    }
+                                    else if(mode == ZOOM) {
+                                        float newDist = spacing(event);
+                                        if (event.getPointerCount() >= 2 & newDist > 5f) {
+                                            matrix.set(savedMatrix);
+                                            scale = newDist / oldDist;
+
+                                            matrix.postScale(scale, scale, mid.x, mid.y);
+                                        }
+                                    }
+                                    if (event.getPointerCount() == 2 || event.getPointerCount() == 3) {
+                                        newRot = rotation(event);
+                                        float r = newRot - d;
+                                        float[] values = new float[9];
+                                        matrix.getValues(values);
+                                        float tx = values[2];
+                                        float ty = values[5];
+                                        float sx = values[0];
+                                        float xc = (view.getWidth() / 2) * sx;
+                                        float yc = (view.getHeight() / 2) * sx;
+                                        matrix.postRotate(r, tx + xc, ty + yc);
+                                    }
+
+                                    break;
+
+                                case MotionEvent.ACTION_POINTER_DOWN:
+                                    oldDist = spacing(event);
+                                    Log.e("SPACE","Spacing" + oldDist);
+                                    if(event.getPointerCount() >= 2 & oldDist > 5f ) {
+                                        Toast.makeText(Collage_Maker.this, "FUCK OF", Toast.LENGTH_SHORT).show();
+                                        savedMatrix.set(matrix);
+                                        midPoint(mid, event);
+                                        mode = ZOOM;
+                                    }
+
+                                    d= rotation(event);
+                                    break;
+
+                                case MotionEvent.ACTION_UP:
+                                case MotionEvent.ACTION_CANCEL:
+                                case MotionEvent.ACTION_POINTER_UP:
+                                    // lastEvent = null;
+                                    savedMatrix.set(matrix);
+                                    mode = NONE;
+                                    break;
+
+                            }
+                            view.setImageMatrix(matrix);
+                            return true;
                         }
                     });
 
@@ -332,5 +394,23 @@ public class Collage_Maker extends AppCompatActivity {
         }
 
     }
+
+
+
+//
+//                        newImage.setOnLongClickListener(new View.OnLongClickListener() {
+//        @Override
+//        public boolean onLongClick(View v) {
+//            Toast.makeText(Collage_Maker.this, "Hold for 2 seconds to remove the image!", Toast.LENGTH_SHORT).show();
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Log.e("ImageID:", "ImageView ID:" + newImage.getId());
+//                    newImage.setImageDrawable(null);
+//                }
+//            }, 2000);
+//            return false;
+//        }
+//    });
 }
 
