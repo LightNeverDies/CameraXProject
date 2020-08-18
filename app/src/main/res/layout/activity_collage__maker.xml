@@ -43,6 +43,8 @@
         android:layout_height="400dp"
         android:layout_centerInParent="true"
         android:id="@+id/MainRelativeLayout"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:background="@drawable/image_view_border"
         android:padding="1dp"
         android:orientation="horizontal">
@@ -52,18 +54,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"/>
-
-        <ImageView
-            android:id="@+id/PickedImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/Collage_Maker"
-            android:layout_alignLeft="@id/Collage_Maker"
-            android:layout_alignRight="@id/Collage_Maker"
-            android:layout_alignTop="@id/Collage_Maker"
-            android:visibility="gone"
-            />
-
 
         <TextView
             android:id="@+id/TextInformation"

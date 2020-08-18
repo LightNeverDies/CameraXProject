@@ -1,6 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ImageChanger">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/MainRelativeLayout"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:background="@drawable/image_view_border"
+        android:padding="1dp"
+        android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/MainRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:layout_height="match_parent">
+    <Button
+        android:id="@+id/btnSelect"
+        android:text="Select Image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/ColorFilter"
+        android:text="Changing Color"
+        android:layout_below="@+id/btnSelect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <SeekBar
+            android:id="@+id/seekBarSaturation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="512"
+            android:visibility="gone"
+            android:progress="256" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
