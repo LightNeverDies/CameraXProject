@@ -16,9 +16,10 @@
             android:padding="1dp"
             >
                 <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:scaleType="fitXY"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
                     android:id="@+id/Img">
                 </ImageView>
 
@@ -28,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/backgroundMain"
-            android:layout_marginTop="402dp"
+            android:layout_marginTop="401dp"
             android:orientation="vertical">
 
             <TextView

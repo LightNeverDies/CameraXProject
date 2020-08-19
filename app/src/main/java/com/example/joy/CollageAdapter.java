@@ -55,7 +55,7 @@ public class CollageAdapter extends BaseAdapter {
         TextView nameTxt = (TextView) convertView.findViewById(R.id.CollageName);
 
         nameTxt.setText("Collage Name:  " + cm.getCollageName());
-        Picasso.with(context).load(cm.getUri()).noFade().noPlaceholder().resize(400,400).into(imageView);
+        Picasso.with(context).load(cm.getUri()).noFade().fit().noPlaceholder().into(imageView);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

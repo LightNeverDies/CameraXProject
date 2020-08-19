@@ -215,7 +215,6 @@ public class Collage_Maker extends AppCompatActivity {
                                         oldDist = spacing(event);
                                         Log.e("SPACE","Spacing" + oldDist);
                                         if(event.getPointerCount() >= 2 & oldDist > 5f ) {
-                                            Toast.makeText(Collage_Maker.this, "FUCK OF", Toast.LENGTH_SHORT).show();
                                             savedMatrix.set(matrix);
                                             midPoint(mid, event);
                                             mode = ZOOM;
@@ -316,7 +315,6 @@ public class Collage_Maker extends AppCompatActivity {
                                     oldDist = spacing(event);
                                     Log.e("SPACE","Spacing" + oldDist);
                                     if(event.getPointerCount() >= 2 & oldDist > 5f ) {
-                                        Toast.makeText(Collage_Maker.this, "FUCK OF", Toast.LENGTH_SHORT).show();
                                         savedMatrix.set(matrix);
                                         midPoint(mid, event);
                                         mode = ZOOM;

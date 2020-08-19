@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -67,7 +68,7 @@ public class ImageChanger extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_changer);
-
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         imageView = findViewById(R.id.image_view);
 
         btnsel = findViewById(R.id.btnSelect);
@@ -323,22 +324,26 @@ public class ImageChanger extends AppCompatActivity {
 
 
     private void SaveImageAfterFilter(){
-        bitmap = Bitmap.createBitmap(MainRelativeLayout.getWidth(), MainRelativeLayout.getHeight(), Bitmap.Config.ARGB_8888);
-        canvasResult = new Canvas(bitmap);
-        imageView.draw(canvasResult);
+        if(imageView.getDrawable() != null) {
+            bitmap = Bitmap.createBitmap(MainRelativeLayout.getWidth(), MainRelativeLayout.getHeight(), Bitmap.Config.ARGB_8888);
+            canvasResult = new Canvas(bitmap);
+            imageView.draw(canvasResult);
 
-        File imagesFolder = new File (Environment.getExternalStorageDirectory(), "Joy" + File.separator + "Camera");
-        if(!imagesFolder.exists()){imagesFolder.mkdirs();}
-        File file = new File(imagesFolder.toString() + File.separator + System.currentTimeMillis() + ".png");
-        String msg = "Pic captured at " + file.getAbsolutePath();
-        Toast.makeText(ImageChanger.this, msg, Toast.LENGTH_SHORT).show();
+            File imagesFolder = new File(Environment.getExternalStorageDirectory(), "Joy" + File.separator + "Camera");
+            if (!imagesFolder.exists()) {
+                imagesFolder.mkdirs();
+            }
+            File file = new File(imagesFolder.toString() + File.separator + System.currentTimeMillis() + ".png");
+            String msg = "Pic captured at " + file.getAbsolutePath();
+            Toast.makeText(ImageChanger.this, msg, Toast.LENGTH_SHORT).show();
 
-        try{
-            FileOutputStream out = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100 , out);
-            out.flush();
-            out.close();
-        }catch (Exception e){}
-
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+            }
+        }
     }
 }

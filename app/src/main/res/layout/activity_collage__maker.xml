@@ -40,7 +40,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:layout_centerInParent="true"
         android:id="@+id/MainRelativeLayout"
         android:clipChildren="false"
@@ -53,8 +53,8 @@
             android:id="@+id/Collage_Maker"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
             android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             />
 
         <TextView
