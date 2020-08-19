@@ -6,11 +6,91 @@
     android:layout_height="match_parent"
     tools:context=".ImageChanger">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:gravity="center|bottom"
+            android:layout_below="@id/FilterLayout"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:id="@+id/btnSelect"
+                android:layout_width="80dp"
+                android:layout_margin="6dp"
+                android:layout_height="60dp"
+                android:background="@drawable/select" />
+
+            <Button
+                android:id="@+id/FilterOptions"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:layout_margin="6dp"
+                android:layout_toRightOf="@+id/btnSelect"
+                android:background="@drawable/rgb" />
+
+            <Button
+                android:id="@+id/Reset"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:layout_margin="6dp"
+                android:visibility="gone"
+                android:background="@drawable/reset_1" />
+
+            <Button
+                android:id="@+id/ColorFilter"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:layout_margin="6dp"
+                android:backgroundTint="#FFFFFF"
+                android:visibility="gone"
+                android:layout_toRightOf="@+id/Reset"
+                android:background="@drawable/colorfilter" />
+
+            <Button
+                android:id="@+id/Contrast"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:layout_margin="6dp"
+                android:visibility="gone"
+                android:layout_toRightOf="@+id/ColorFilter"
+                android:background="@drawable/contrast" />
+
+            <Button
+                android:id="@+id/Exit"
+                android:layout_width="80dp"
+                android:visibility="gone"
+                android:layout_margin="6dp"
+                android:layout_height="60dp"
+                android:layout_toRightOf="@+id/Contrast"
+                android:background="@drawable/logout_1" />
+
+        </RelativeLayout>
+
     <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/SaveImageFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button"
+            android:backgroundTint="@color/button3"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="6dp"
+            android:textSize="20sp"
+            android:text=" Save Image "
+            android:textColor="#FFFFFFFF"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/MainRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        android:id="@+id/MainRelativeLayout"
+        android:layout_marginTop="100dp"
         android:background="@drawable/image_view_border"
         android:orientation="horizontal">
 
@@ -18,92 +98,80 @@
             android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY" />
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_below="@id/MainRelativeLayout"
-        android:layout_width="match_parent"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/btnSelect"
-            android:text="Select Image"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:id="@+id/FilterLayout"
+            android:layout_below="@id/MainRelativeLayout"
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/ColorFilter"
-            android:text="Changing Color"
-            android:layout_below="@+id/btnSelect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            <RelativeLayout
+                android:id="@+id/Options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/Reset"
-            android:text="Reset ImageView"
-            android:layout_below="@+id/ColorFilter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+                <RadioGroup
+                    android:id="@+id/axisgroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-    </RelativeLayout>
+                    <RadioButton
+                        android:id="@+id/radioAxisRed"
+                        android:layout_width="0dp"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="Red" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_below="@+id/Options"
-        android:layout_height="wrap_content">
+                    <RadioButton
+                        android:id="@+id/radioAxisGreen"
+                        android:layout_width="0dp"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Green" />
 
-        <SeekBar
-            android:id="@+id/seekBarRotate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="360"
-            android:progress="0" />
+                    <RadioButton
+                        android:id="@+id/radioAxisBlue"
+                        android:layout_width="0dp"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Blue" />
+                </RadioGroup>
+            </RelativeLayout>
 
-        <SeekBar
-            android:id="@+id/seekBarSaturation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="360"
-            android:layout_below="@+id/seekBarRotate"
-            android:progress="0" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Options">
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:id="@+id/Options"
-        android:layout_height="wrap_content">
-    <RadioGroup
-        android:id="@+id/axisgroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+                <SeekBar
+                    android:id="@+id/seekBarRotate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:max="360"
+                    android:progress="0" />
 
-        <RadioButton
-            android:id="@+id/radioAxisRed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="Red" />
+                <SeekBar
+                    android:id="@+id/seekBarSaturation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_below="@+id/seekBarRotate"
+                    android:max="360"
+                    android:progress="0" />
 
-        <RadioButton
-            android:id="@+id/radioAxisGreen"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Green"
-            />
+            </RelativeLayout>
 
-        <RadioButton
-            android:id="@+id/radioAxisBlue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Blue" />
-    </RadioGroup>
-    </RelativeLayout>
+         </RelativeLayout>
+
+
 </RelativeLayout>
