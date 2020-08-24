@@ -5,10 +5,12 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -26,7 +28,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +39,7 @@ public class Collage_Maker extends AppCompatActivity {
 
     Button image_loader, image_saver, information;
     TextView textInformation;
-    ImageView newImage;
+    ImageView newImage, imageView;
     RelativeLayout rl;
     private PointF start = new PointF();
     private PointF mid = new PointF();
@@ -43,8 +47,13 @@ public class Collage_Maker extends AppCompatActivity {
     private Matrix savedMatrix = new Matrix();
     private float oldDist = 1f;
     float[] lastEvent = null;
+    ImageView[] imageViewАrr;
     float xDown = 0, yDown = 0;
+    Bitmap bitmap;
+    Canvas canvasResult;
+    List<ImageView> imageViews = new ArrayList<>();
 
+    RelativeLayout MainRelativeLayout;
     GestureDetector gestureDetector;
     static final int NONE = 0;
     static final int DRAG = 1;
@@ -61,7 +70,7 @@ public class Collage_Maker extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_collage__maker);
 
-        final ImageView imageView = (ImageView) findViewById(R.id.Collage_Maker);
+        imageView = (ImageView) findViewById(R.id.Collage_Maker);
         Intent intent = getIntent();
         byte[] bytes = intent.getByteArrayExtra("Image");
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -73,23 +82,9 @@ public class Collage_Maker extends AppCompatActivity {
         image_saver = (Button) findViewById(R.id.SaveImage);
         information = (Button) findViewById(R.id.Information);
 
+        MainRelativeLayout = (RelativeLayout) findViewById(R.id.MainRelativeLayout);
+
         textInformation = (TextView) findViewById(R.id.TextInformation);
-
-
-        information.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onClick(View v) {
-                textInformation.setText(
-                        "How to use Collage Option" + "\n" +
-                                "Step 1: Click on \"Load Image\". \n" +
-                                "Step 2: Choose one or multiple photos from your gallery.\n" +
-                                "Step 3: Move your selected photos to their places in the collage.\n" +
-                                "Step 4: Save your collage.");
-                textInformation.setVisibility((textInformation.getVisibility() == v.GONE) ? v.VISIBLE : v.GONE);
-                imageView.setVisibility((imageView.getVisibility() == v.VISIBLE) ? v.GONE : v.VISIBLE);
-            }
-        });
 
         image_loader.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +102,22 @@ public class Collage_Maker extends AppCompatActivity {
         image_saver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SaveImageCollage();
+            }
+        });
 
+        information.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View v) {
+                textInformation.setText(
+                        "How to use Collage Option" + "\n" +
+                                "Step 1: Click on \"Load Image\". \n" +
+                                "Step 2: Choose one or multiple photos from your gallery.\n" +
+                                "Step 3: Move your selected photos to their places in the collage.\n" +
+                                "Step 4: Save your collage.");
+                textInformation.setVisibility((textInformation.getVisibility() == v.GONE) ? v.VISIBLE : v.GONE);
+                imageView.setVisibility((imageView.getVisibility() == v.VISIBLE) ? v.GONE : v.VISIBLE);
             }
         });
 
@@ -128,6 +138,7 @@ public class Collage_Maker extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK) {
 
             List<Bitmap> bitmaps = new ArrayList<>();
+            imageViews = new ArrayList<>();
 
             ClipData clipData = data.getClipData();
 
@@ -142,25 +153,23 @@ public class Collage_Maker extends AppCompatActivity {
                         bitmaps.add(i, bitmap);
 
                         newImage = new ImageView(getApplicationContext());
+                        Log.e("Images","How many of them" + imageViews.size());
+                        newImage.setAdjustViewBounds(true);
+                        newImage.setScaleType(ImageView.ScaleType.MATRIX);
 
-                        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-//                        lp.addRule(RelativeLayout.ALIGN_BOTTOM, 1);
-//                        lp.addRule(RelativeLayout.ALIGN_LEFT, 1);
-//                        lp.addRule(RelativeLayout.ALIGN_RIGHT, 1);
-//                        lp.addRule(RelativeLayout.ALIGN_TOP, 1);
+                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT
+                        );
+
 
                         newImage.setLayoutParams(lp);
                         newImage.setId(i + rl.getChildCount()); // => might be a problem BIG PROBLEM very soon
 
-
-                       // newImage.getScaleType();
-
                         rl.addView(newImage);
-                        newImage.setAdjustViewBounds(true);
-                        newImage.setScaleType(ImageView.ScaleType.MATRIX);
+
+                        imageViews.add(newImage);
                         newImage.setImageBitmap(bitmap);
-
-
 
                         newImage.setOnTouchListener(new View.OnTouchListener() {
                             @Override
@@ -169,9 +178,9 @@ public class Collage_Maker extends AppCompatActivity {
                                 ImageView view = (ImageView) v;
                                 view.setAdjustViewBounds(true);
                                 view.setScaleType(ImageView.ScaleType.MATRIX);
-
+                                int maskedAction = event.getActionMasked();
                                 float scale;
-                                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                                switch (maskedAction) {
 
                                     case MotionEvent.ACTION_DOWN:
                                         matrix = new Matrix();
@@ -224,14 +233,12 @@ public class Collage_Maker extends AppCompatActivity {
                                         break;
 
                                     case MotionEvent.ACTION_UP:
-                                    case MotionEvent.ACTION_CANCEL:
                                     case MotionEvent.ACTION_POINTER_UP:
-                                       // lastEvent = null;
-                                        savedMatrix.set(matrix);
                                         mode = NONE;
                                         break;
 
                                 }
+                                newImage.invalidate();
                                 view.setImageMatrix(matrix);
                                 return true;
                             }
@@ -250,13 +257,16 @@ public class Collage_Maker extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeStream(is);
                     bitmaps.add(bitmap);
 
-                    ImageView newImage = new ImageView(getApplicationContext());
-
-                    LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-                    newImage.setLayoutParams(lp);
+                    newImage = new ImageView(getApplicationContext());
                     newImage.setAdjustViewBounds(true);
                     newImage.setScaleType(ImageView.ScaleType.MATRIX);
+
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    );
+
+                    newImage.setLayoutParams(lp);
 
                     rl.addView(newImage);
 
@@ -267,16 +277,14 @@ public class Collage_Maker extends AppCompatActivity {
                         public boolean onTouch(View v, MotionEvent event) {
                             // the user just put his finger down on the imageView
                             ImageView view = (ImageView) v;
-                            view.setAdjustViewBounds(true);
-                            view.setScaleType(ImageView.ScaleType.MATRIX);
-
+                            int maskedAction = event.getActionMasked();
                             float scale;
-                            switch (event.getAction() & MotionEvent.ACTION_MASK) {
 
+                            switch (maskedAction) {
                                 case MotionEvent.ACTION_DOWN:
+                                    start.set(event.getX(), event.getY());
                                     matrix = new Matrix();
                                     savedMatrix.set(matrix);
-                                    start.set(event.getX(), event.getY());
                                     mode = DRAG;
                                     break;
 
@@ -324,11 +332,10 @@ public class Collage_Maker extends AppCompatActivity {
                                     break;
 
                                 case MotionEvent.ACTION_UP:
-                                case MotionEvent.ACTION_CANCEL:
                                 case MotionEvent.ACTION_POINTER_UP:
-                                    // lastEvent = null;
-                                    savedMatrix.set(matrix);
                                     mode = NONE;
+                                    break;
+                                case MotionEvent.ACTION_CANCEL:
                                     break;
 
                             }
@@ -360,6 +367,43 @@ public class Collage_Maker extends AppCompatActivity {
         float x = event.getX(0) + event.getX(1);
         float y = event.getY(0) + event.getY(1);
         point.set(x / 2, y / 2);
+    }
+
+
+    private void SaveImageCollage(){
+        if(imageView.getDrawable() != null && newImage.getDrawable() !=null) {
+            bitmap = Bitmap.createBitmap(MainRelativeLayout.getWidth(), MainRelativeLayout.getHeight(), Bitmap.Config.ARGB_8888);
+            canvasResult = new Canvas(bitmap);
+
+            if(imageViews.size() > 1) {
+                Log.e("SS","S" + imageViews.size());
+                for(int i = 0; i <imageViews.size(); i++) {
+                    bitmap = Bitmap.createBitmap(imageViews.get(i).getWidth(),imageViews.get(i).getHeight(), Bitmap.Config.ARGB_8888);
+                    canvasResult = new Canvas(bitmap);
+                    newImage.draw(canvasResult);
+                }
+            }
+            else{
+                imageView.draw(canvasResult);
+                newImage.draw(canvasResult);
+            }
+
+            File imagesFolder = new File(Environment.getExternalStorageDirectory(), "Joy" + File.separator + "Collage");
+            if (!imagesFolder.exists()) {
+                imagesFolder.mkdirs();
+            }
+            File file = new File(imagesFolder.toString() + File.separator + System.currentTimeMillis() + ".png");
+            String msg = "Pic captured at " + file.getAbsolutePath();
+            Toast.makeText(Collage_Maker.this, msg, Toast.LENGTH_SHORT).show();
+
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+            }
+        }
     }
 
     private class DoubleTapGesture extends GestureDetector.SimpleOnGestureListener{
