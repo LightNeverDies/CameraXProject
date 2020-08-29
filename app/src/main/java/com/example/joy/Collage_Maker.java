@@ -169,18 +169,16 @@ public class Collage_Maker extends AppCompatActivity {
                         imageViews.add(newImage);
                         newImage.setImageBitmap(bitmap);
 
-                        newImage.setOnTouchListener(new View.OnTouchListener() {
+                        imageViews.get(i).setOnTouchListener(new View.OnTouchListener() {
                             @Override
                             public boolean onTouch(View v, MotionEvent event) {
                                 // the user just put his finger down on the imageView
                                 ImageView view = (ImageView) v;
                                 int maskedAction = event.getActionMasked();
+                                lp.addRule(RelativeLayout.ABOVE,1);
                                 float scale;
                                 switch (maskedAction) {
                                     case MotionEvent.ACTION_DOWN:
-
-                                        lp.addRule(RelativeLayout.ABOVE,newImage.getId());
-                                        lp.addRule(RelativeLayout.BELOW,newImage.getId());
                                         savedMatrix.set(matrix);
                                         start.set(event.getX(), event.getY());
                                         mode = DRAG;
@@ -228,12 +226,13 @@ public class Collage_Maker extends AppCompatActivity {
                                         break;
 
                                     case MotionEvent.ACTION_UP:
+                                    case MotionEvent.ACTION_CANCEL:
                                     case MotionEvent.ACTION_POINTER_UP:
                                         mode = NONE;
                                         break;
 
                                 }
-                                newImage.invalidate();
+                                view.invalidate();
                                 view.setImageMatrix(matrix);
                                 return true;
                             }
