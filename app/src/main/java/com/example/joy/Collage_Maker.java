@@ -11,17 +11,15 @@ import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +33,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class Collage_Maker extends AppCompatActivity {
 
     Button image_loader, image_saver, information;
@@ -45,7 +45,6 @@ public class Collage_Maker extends AppCompatActivity {
     private PointF mid = new PointF();
     private Matrix matrix = new Matrix();
     private Matrix savedMatrix = new Matrix();
-    private float oldDist = 1f;
     float[] lastEvent = null;
     ImageView[] imageViewАrr;
     float xDown = 0, yDown = 0;
@@ -53,15 +52,16 @@ public class Collage_Maker extends AppCompatActivity {
     Canvas canvasResult;
     List<ImageView> imageViews = new ArrayList<>();
 
-    RelativeLayout MainRelativeLayout;
-    GestureDetector gestureDetector;
-    static final int NONE = 0;
-    static final int DRAG = 1;
-    static final int ZOOM = 2;
-    int mode = NONE;
-    private float newRot = 0f;
-    private float d = 0f;
 
+    RelativeLayout MainRelativeLayout;
+    private static final int NONE = 0;
+    private static final int DRAG = 1;
+    private static final int ZOOM = 2;
+    private int mode = NONE;
+    private float oldDist = 1f;
+    private float d = 0f;
+    private float newRot = 0f;
+    float scalediff;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -153,16 +153,14 @@ public class Collage_Maker extends AppCompatActivity {
                         bitmaps.add(i, bitmap);
 
                         newImage = new ImageView(getApplicationContext());
-                        Log.e("Images","How many of them" + imageViews.size());
-                        newImage.setAdjustViewBounds(true);
-                        newImage.setScaleType(ImageView.ScaleType.MATRIX);
+                        Log.e("Images", "How many of them" + imageViews.size());
 
                         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                                 RelativeLayout.LayoutParams.WRAP_CONTENT
                         );
 
-
+                        newImage.setScaleType(ImageView.ScaleType.MATRIX);
                         newImage.setLayoutParams(lp);
                         newImage.setId(i + rl.getChildCount()); // => might be a problem BIG PROBLEM very soon
 
@@ -176,14 +174,13 @@ public class Collage_Maker extends AppCompatActivity {
                             public boolean onTouch(View v, MotionEvent event) {
                                 // the user just put his finger down on the imageView
                                 ImageView view = (ImageView) v;
-                                view.setAdjustViewBounds(true);
-                                view.setScaleType(ImageView.ScaleType.MATRIX);
                                 int maskedAction = event.getActionMasked();
                                 float scale;
                                 switch (maskedAction) {
-
                                     case MotionEvent.ACTION_DOWN:
-                                        matrix = new Matrix();
+
+                                        lp.addRule(RelativeLayout.ABOVE,newImage.getId());
+                                        lp.addRule(RelativeLayout.BELOW,newImage.getId());
                                         savedMatrix.set(matrix);
                                         start.set(event.getX(), event.getY());
                                         mode = DRAG;
@@ -198,10 +195,9 @@ public class Collage_Maker extends AppCompatActivity {
                                         }
                                         else if(mode == ZOOM) {
                                                 float newDist = spacing(event);
-                                                if (event.getPointerCount() >= 2 & newDist > 5f) {
+                                                if (newDist > 5f) {
                                                     matrix.set(savedMatrix);
                                                     scale = newDist / oldDist;
-
                                                     matrix.postScale(scale, scale, mid.x, mid.y);
                                                 }
                                             }
@@ -223,12 +219,11 @@ public class Collage_Maker extends AppCompatActivity {
                                     case MotionEvent.ACTION_POINTER_DOWN:
                                         oldDist = spacing(event);
                                         Log.e("SPACE","Spacing" + oldDist);
-                                        if(event.getPointerCount() >= 2 & oldDist > 5f ) {
+                                        if( oldDist > 5f ) {
                                             savedMatrix.set(matrix);
                                             midPoint(mid, event);
                                             mode = ZOOM;
                                         }
-
                                         d= rotation(event);
                                         break;
 
@@ -243,6 +238,7 @@ public class Collage_Maker extends AppCompatActivity {
                                 return true;
                             }
                         });
+
 
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -279,25 +275,24 @@ public class Collage_Maker extends AppCompatActivity {
                             ImageView view = (ImageView) v;
                             int maskedAction = event.getActionMasked();
                             float scale;
-
                             switch (maskedAction) {
                                 case MotionEvent.ACTION_DOWN:
-                                    start.set(event.getX(), event.getY());
-                                    matrix = new Matrix();
                                     savedMatrix.set(matrix);
+                                    start.set(event.getX(), event.getY());
                                     mode = DRAG;
                                     break;
 
                                 // the user moved his finger
                                 case MotionEvent.ACTION_MOVE:
                                     if(mode == DRAG) {
+                                        Log.e("Why","Why" + newImage.getId());
                                         matrix.set(savedMatrix);
                                         matrix.postTranslate(event.getX() - start.x, event.getY()
                                                 - start.y);
                                     }
                                     else if(mode == ZOOM) {
                                         float newDist = spacing(event);
-                                        if (event.getPointerCount() >= 2 & newDist > 5f) {
+                                        if (newDist > 5f) {
                                             matrix.set(savedMatrix);
                                             scale = newDist / oldDist;
 
@@ -322,12 +317,11 @@ public class Collage_Maker extends AppCompatActivity {
                                 case MotionEvent.ACTION_POINTER_DOWN:
                                     oldDist = spacing(event);
                                     Log.e("SPACE","Spacing" + oldDist);
-                                    if(event.getPointerCount() >= 2 & oldDist > 5f ) {
+                                    if( oldDist > 5f ) {
                                         savedMatrix.set(matrix);
                                         midPoint(mid, event);
                                         mode = ZOOM;
                                     }
-
                                     d= rotation(event);
                                     break;
 
@@ -335,10 +329,9 @@ public class Collage_Maker extends AppCompatActivity {
                                 case MotionEvent.ACTION_POINTER_UP:
                                     mode = NONE;
                                     break;
-                                case MotionEvent.ACTION_CANCEL:
-                                    break;
 
                             }
+                            newImage.invalidate();
                             view.setImageMatrix(matrix);
                             return true;
                         }
@@ -350,6 +343,7 @@ public class Collage_Maker extends AppCompatActivity {
             }
         }
     }
+
     private float rotation(MotionEvent event) {
         double delta_x = (event.getX(0) - event.getX(1));
         double delta_y = (event.getY(0) - event.getY(1));
@@ -357,6 +351,7 @@ public class Collage_Maker extends AppCompatActivity {
 
         return (float) Math.toDegrees(radians);
     }
+
     private float spacing(MotionEvent event) {
         float x = event.getX(0) - event.getX(1);
         float y = event.getY(0) - event.getY(1);
@@ -370,20 +365,20 @@ public class Collage_Maker extends AppCompatActivity {
     }
 
 
-    private void SaveImageCollage(){
-        if(imageView.getDrawable() != null && newImage.getDrawable() !=null) {
+
+    private void SaveImageCollage() {
+        if (imageView.getDrawable() != null && newImage.getDrawable() != null) {
             bitmap = Bitmap.createBitmap(MainRelativeLayout.getWidth(), MainRelativeLayout.getHeight(), Bitmap.Config.ARGB_8888);
             canvasResult = new Canvas(bitmap);
 
-            if(imageViews.size() > 1) {
-                Log.e("SS","S" + imageViews.size());
-                for(int i = 0; i <imageViews.size(); i++) {
-                    bitmap = Bitmap.createBitmap(imageViews.get(i).getWidth(),imageViews.get(i).getHeight(), Bitmap.Config.ARGB_8888);
+            if (imageViews.size() > 1) {
+                Log.e("SS", "S" + imageViews.size());
+                for (int i = 0; i < imageViews.size(); i++) {
+                    bitmap = Bitmap.createBitmap(imageViews.get(i).getWidth(), imageViews.get(i).getHeight(), Bitmap.Config.ARGB_8888);
                     canvasResult = new Canvas(bitmap);
                     newImage.draw(canvasResult);
                 }
-            }
-            else{
+            } else {
                 imageView.draw(canvasResult);
                 newImage.draw(canvasResult);
             }
@@ -405,54 +400,4 @@ public class Collage_Maker extends AppCompatActivity {
             }
         }
     }
-
-    private class DoubleTapGesture extends GestureDetector.SimpleOnGestureListener{
-
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            newImage.setOnLongClickListener(new View.OnLongClickListener() {
-                            int count = 0;
-                            public boolean onLongClick(View v) {
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(Collage_Maker.this, "Double tap the image and wait for 5 second to remove it.", Toast.LENGTH_SHORT).show();
-                                        newImage.setImageDrawable(null);
-
-                                    }
-                                }, 5000);
-
-                                return true;
-                                //return false;
-                            }
-
-                        });
-            return false;
-        }
-
-        @Override
-        public boolean onDoubleTapEvent(MotionEvent e) {
-            return false;
-        }
-
-    }
-
-
-
-//
-//                        newImage.setOnLongClickListener(new View.OnLongClickListener() {
-//        @Override
-//        public boolean onLongClick(View v) {
-//            Toast.makeText(Collage_Maker.this, "Hold for 2 seconds to remove the image!", Toast.LENGTH_SHORT).show();
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Log.e("ImageID:", "ImageView ID:" + newImage.getId());
-//                    newImage.setImageDrawable(null);
-//                }
-//            }, 2000);
-//            return false;
-//        }
-//    });
 }
-

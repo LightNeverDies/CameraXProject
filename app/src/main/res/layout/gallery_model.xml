@@ -45,12 +45,12 @@
             <TextView
                 android:id="@+id/ImgDate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/cardview_light_background"
-                android:layout_marginBottom="20dp"
-                android:textSize="14sp"
-                android:textAlignment="center"
-                tools:ignore="PrivateResource" />
+                        android:layout_height="wrap_content"
+            android:textColor="@color/cardview_light_background"
+            android:layout_marginBottom="20dp"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            tools:ignore="PrivateResource" />
 
         </LinearLayout>
 

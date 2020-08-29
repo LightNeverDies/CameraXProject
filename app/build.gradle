@@ -53,6 +53,9 @@ dependencies {
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
+    implementation 'com.github.lau1944:Zoom-Drag-Rotate-ImageView:1.0.0'
+
+
     implementation 'com.google.firebase:firebase-storage:19.1.1'
     implementation 'com.google.firebase:firebase-auth:19.3.2'
     implementation 'com.google.firebase:firebase-messaging:20.2.4'
